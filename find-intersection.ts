@@ -64,11 +64,6 @@ const walkList = (start: INode, func: (nodeVal: number) => boolean ) => {
   }
 }
 
-const linkedFindIntersection = (a: INode, b: INode) => {
-  const aArr: number[] = [];
-  const bArr: number[] = [];
-}
-
 const findIntersection = (a: number[], b: number[]): [number, number] => {
   const intersection: [number,number] = [-1, -1];
 
