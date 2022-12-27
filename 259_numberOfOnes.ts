@@ -1,3 +1,5 @@
+import { assertEquals } from "./utils.ts";
+
 const numberOfOnes = (n: number): number => {
   const valid: number[] = [];
 
@@ -6,8 +8,10 @@ const numberOfOnes = (n: number): number => {
   }
 
   console.log(valid);
-  
-  return (valid.join("").match(/1/g) || []).length;
-}
 
-console.log(numberOfOnes(14));
+  return (valid.join("").match(/1/g) || []).length;
+};
+
+Deno.test("numberOfOnes", () => {
+  assertEquals(numberOfOnes(14), 7);
+});

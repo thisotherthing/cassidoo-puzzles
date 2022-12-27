@@ -1,4 +1,4 @@
-import { assertEquals } from "https://deno.land/std@0.161.0/testing/asserts.ts";
+import { assertEquals } from "./utils.ts";
 
 const antidivisor = (input: number): number[] => {
   const result: number[] = [];
@@ -15,7 +15,7 @@ const antidivisor = (input: number): number[] => {
   return result;
 };
 
-Deno.test("combineStrings", () => {
+Deno.test("test", () => {
   assertEquals(antidivisor(1), []);
   assertEquals(antidivisor(3), [2]);
   assertEquals(antidivisor(5), [2, 3]);

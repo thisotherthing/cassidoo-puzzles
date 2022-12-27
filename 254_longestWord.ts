@@ -1,12 +1,10 @@
-const str = "abppplee";
-const dict = [ "able", "ale", "apple", "bale", "kangaroo" ];
+import { assertEquals } from "./utils.ts";
 
 const longestWord = (str: string, dict: string[]) => {
   const possible: string[] = [];
 
   const wordLength = str.length;
 
-  
   dict.forEach((word) => {
     let char = "";
     let srtIdx = 0;
@@ -27,9 +25,14 @@ const longestWord = (str: string, dict: string[]) => {
   // console.log(possible);
 
   return possible[0];
-}
+};
 
-console.log(longestWord(str, dict));
-// 'apple'
-// "able" and "ale" also work, but are shorter than "apple"
-// "bale" has all the right letters, but not in the right order
+Deno.test("truncate", () => {
+  const str = "abppplee";
+  const dict = ["able", "ale", "apple", "bale", "kangaroo"];
+
+  assertEquals(longestWord(str, dict), "apple");
+  // 'apple'
+  // "able" and "ale" also work, but are shorter than "apple"
+  // "bale" has all the right letters, but not in the right order
+});

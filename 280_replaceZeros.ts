@@ -1,4 +1,4 @@
-import { assertEquals } from "https://deno.land/std@0.161.0/testing/asserts.ts";
+import { assertEquals } from "./utils.ts";
 
 const replaceZeros = (input: string): string => {
   const result: string[] = [];
@@ -25,7 +25,7 @@ const replaceZeros = (input: string): string => {
   return result.join("");
 };
 
-Deno.test("truncate", () => {
+Deno.test("test", () => {
   assertEquals(replaceZeros("123456789"), "123456789");
   assertEquals(replaceZeros("000000000000"), "12");
   assertEquals(replaceZeros("1234500362000440"), "1234523623441");
