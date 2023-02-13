@@ -1,4 +1,4 @@
-import { assertEquals } from "https://deno.land/std@0.161.0/testing/asserts.ts";
+import { assertEquals } from "./utils.ts";
 
 const capitalAfterVowel = (val: string): string => {
   const isVowel = (c: string) => {

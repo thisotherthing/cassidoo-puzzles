@@ -1,4 +1,4 @@
-import { assertEquals } from "https://deno.land/std@0.161.0/testing/asserts.ts";
+import { assertEquals } from "./utils.ts";
 
 const func = (val: string): number => {
   let index = 0;
