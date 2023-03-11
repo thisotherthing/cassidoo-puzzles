@@ -1,6 +1,17 @@
-import { assertEquals, assertThrows } from "https://deno.land/std@0.153.0/testing/asserts.ts";
+import {
+  assertEquals,
+  assertThrows,
+} from "https://deno.land/std@0.153.0/testing/asserts.ts";
 
-import { addg } from "./addg.js";
+export function addg(a?: any) {
+  if (a === undefined) return a;
+  return function g(b?: any) {
+    if (b !== undefined) {
+      return addg(a + b);
+    }
+    return a;
+  };
+}
 
 Deno.test("expected results", () => {
   assertEquals(addg(), undefined);
@@ -29,12 +40,12 @@ Deno.test("non number inputs", () => {
 
 Deno.test("errors", () => {
   assertThrows(() => {
-    addg()()()()
+    addg()()()();
   }, Error);
   assertThrows(() => {
-    addg(3)(undefined)(5)()
+    addg(3)(undefined)(5)();
   }, Error);
   assertThrows(() => {
-    addg(3)()(5)()
+    addg(3)()(5)();
   }, Error);
-})
+});
