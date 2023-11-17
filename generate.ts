@@ -66,7 +66,6 @@ const result = await prompt([
   },
 ]);
 
-console.log({ result });
 const parsed = parseExample(result.example || "");
 
 const contentBuilder: string[] = [];
@@ -86,3 +85,5 @@ Deno.writeTextFileSync(path, contentBuilder.join(`\n\n`));
 
 new Deno.Command("deno", { args: [`fmt ${path}`] }).outputSync();
 new Deno.Command("code", { args: [path] }).outputSync();
+
+console.log(`deno test ${path}`);
