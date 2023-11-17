@@ -72,8 +72,8 @@ const parsed = parseExample(result.example || "");
 const contentBuilder: string[] = [];
 
 contentBuilder.push(`import { assertEquals } from "./utils.ts";`);
-contentBuilder.push(`const ${parsed.name} = (val: number): number => {
-  return val + 1;
+contentBuilder.push(`const ${parsed.name} = (input: number): number => {
+  return input + 1;
 };`);
 
 contentBuilder.push(`Deno.test("test", () => {
