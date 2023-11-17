@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "strict": true
+  },
+  "tasks": {
+    "generate": "deno run --allow-run --allow-write generate.ts"
+  },
+  "imports": {}
+}
