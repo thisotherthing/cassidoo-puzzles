@@ -8,5 +8,8 @@
   "imports": {
     "@cliffy/prompt": "jsr:@cliffy/prompt@^1.2.1",
     "@prettier/sync": "npm:@prettier/sync@^0.6.1"
-  }
+  },
+  "unstable": [
+    "temporal"
+  ]
 }
