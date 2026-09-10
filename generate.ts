@@ -53,7 +53,12 @@ contentBuilder.push(`Deno.test("test", () => {
 const path = `${result.issue}_${parsedExample.name}.ts`;
 
 let code = contentBuilder.join(`\n\n`);
-code = prettier.format(code, { parser: "typescript" });
+
+try {
+  code = prettier.format(code, { parser: "typescript", printWidth: 80 });
+} catch (e) {
+  console.warn(e);
+}
 
 Deno.writeTextFileSync(path, code);
 
@@ -65,4 +70,4 @@ try {
   );
 }
 
-console.info(`you can run the example with "deno test ${path}"`);
+console.info(`you can run the example with:\ndeno test "${path}"`);

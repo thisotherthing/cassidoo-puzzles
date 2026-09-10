@@ -9,20 +9,23 @@ export const parseExample = (
   name: string;
   example: string;
 } => {
-  let description = "";
-  let exampleCode = input;
+  const result = {
+    description: "",
+    name: "",
+    example: input,
+  };
 
   // check if description was pasted, we want that as a comment
   // https://regex101.com/?regex=%5BEe%5Dxample%3A&testString=Example%3A%0Aexample%3A&flags=gm&flavor=javascript&delimiter=%2F
-  if (exampleCode.includes("Example:\n")) {
-    const split = exampleCode.trim().split(/[Ee]xample:/);
+  if (result.example.includes("Example:\n")) {
+    const split = result.example.trim().split(/[Ee]xample:/);
 
     if (split.length !== 2) {
       throw new Error(`there should only be one "Example:"! in the input`);
     }
 
     // example is in the second part
-    exampleCode = split[1].trim();
+    result.example = split[1].trim();
 
     // check description
     const commentLines = split[0].trim().split("\n");
@@ -32,39 +35,39 @@ export const parseExample = (
       commentLines.shift();
     }
 
-    description = commentLines.join("\n");
+    result.description = commentLines.join("\n");
   }
 
-  const data = exampleCode
-    .split(">")
-    .map((v) => v.trim())
-    .filter(Boolean);
+  if (result.example.trim().length > 0) {
+    const data = result.example
+      .split(">")
+      .map((v) => v.trim())
+      .filter(Boolean);
 
-  const name = data[0].split("(")[0].trim();
-  const examples: string[] = [];
+    result.name = data[0].split("(")[0].trim();
+    const examples: string[] = [];
 
-  for (let i = 0, l = data.length; i < l; i += 2) {
-    let comment = "";
-    let result = data[i + 1].trim();
+    for (let i = 0, l = data.length; i < l; i += 2) {
+      let comment = "";
+      let result = data[i + 1].trim();
 
-    if (result.includes("//")) {
-      const split = result.split("//");
-      result = (split.shift() as string).trim();
-      comment = split.map((v) => v.trim()).join("\n // ");
+      if (result.includes("//")) {
+        const split = result.split("//");
+        result = (split.shift() as string).trim();
+        comment = split.map((v) => v.trim()).join("\n // ");
+      }
+
+      examples.push(
+        `assertEquals(${data[i]}, ${result});${
+          comment.length === 0 ? "" : ` // ${comment}`
+        }`,
+      );
     }
 
-    examples.push(
-      `assertEquals(${data[i]}, ${result});${
-        comment.length === 0 ? "" : ` // ${comment}`
-      }`,
-    );
+    result.example = examples.join("\n");
   }
 
-  return {
-    description: description,
-    name,
-    example: examples.join("\n"),
-  };
+  return result;
 };
 
 Deno.test("test", async (t) => {
