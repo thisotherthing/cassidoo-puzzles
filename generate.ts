@@ -1,11 +1,11 @@
-import {
-  Input,
-  Number,
-  prompt,
-} from "https://deno.land/x/cliffy@v1.0.0-rc.3/prompt/mod.ts";
+import { Input, Number, prompt } from "@cliffy/prompt";
+import prettier from "@prettier/sync";
 
 import { parseExample } from "./utils.ts";
 
+const DEFAULT_EDITOR: string = "codium";
+
+// prompt for number and example
 const result = await prompt([
   {
     name: "issue",
@@ -13,30 +13,56 @@ const result = await prompt([
     type: Number,
   },
   {
+    name: "description",
+    message: "What's the description?",
+    transform: (value) => value.trim(),
+    type: Input,
+  },
+  {
     name: "example",
     message: "What's the example?",
+    transform: (value) => value.trim(),
     type: Input,
   },
 ]);
 
-const parsed = parseExample(result.example || "");
+// get cleaned example
+const parsedExample = parseExample(result.example || "");
 
 const contentBuilder: string[] = [];
 
 contentBuilder.push(`import { assertEquals } from "./utils.ts";`);
-contentBuilder.push(`const ${parsed.name} = (input: number): number => {
+
+if (result.description) {
+  // keep newlines in description
+  contentBuilder.push(
+    result.description.split("\n").filter(Boolean).map((v) => `// ${v}`).join(
+      "\n",
+    ),
+  );
+}
+
+contentBuilder.push(`const ${parsedExample.name} = (input: number): number => {
   return input + 1;
 };`);
 
 contentBuilder.push(`Deno.test("test", () => {
-  ${parsed.example}
+  ${parsedExample.example}
 });`);
 
-const path = `${result.issue}_${parsed.name}.ts`;
+const path = `${result.issue}_${parsedExample.name}.ts`;
 
-Deno.writeTextFileSync(path, contentBuilder.join(`\n\n`));
+let code = contentBuilder.join(`\n\n`);
+code = prettier.format(code, { parser: "typescript" });
 
-new Deno.Command("deno", { args: [`fmt ${path}`] }).outputSync();
-new Deno.Command("code", { args: [path] }).outputSync();
+Deno.writeTextFileSync(path, code);
 
-console.log(`deno test ${path}`);
+try {
+  new Deno.Command(DEFAULT_EDITOR, { args: [path] }).outputSync();
+} catch (e) {
+  console.warn(
+    `Could not open file in editor, configured is "${DEFAULT_EDITOR}", error: [${e}]`,
+  );
+}
+
+console.info(`you can run the example with "deno test ${path}"`);
