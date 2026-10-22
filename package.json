@@ -1,0 +1,32 @@
+{
+  "name": "cassidoo-puzzles",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "generate": "node --permission --allow-fs-read=./ --allow-worker --allow-fs-write=./ generator/generate.ts",
+    "test": "vitest"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "12.15.0",
+      "onFail": "download"
+    },
+    "runtime": {
+      "name": "node",
+      "version": "^26.4.0",
+      "onFail": "download"
+    }
+  },
+  "packageManager": "pnpm@12.15.0",
+  "type": "module",
+  "dependencies": {
+    "@cliffy/prompt": "jsr:^1.3.1",
+    "@prettier/sync": "^0.6.1",
+    "vitest": "^5.0.5"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5"
+  }
+}
